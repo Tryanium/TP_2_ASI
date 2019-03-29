@@ -20,7 +20,7 @@ public class ReadJsonFile {
     }
 	
 	public static JSONObject read(String name) {
-		File file = new File("src/main/resources/articles/" + name);
+		File file = new File("src/main/resources/articlesPending/" + name);
 		JSONObject article = new JSONObject();
 
 		try {
@@ -30,6 +30,7 @@ public class ReadJsonFile {
 		    int lineNum = 0;
 		    while (scanner.hasNextLine()) {
 		        String line = scanner.nextLine();
+		        line = line.replaceAll("[\"'\u2018\u2019\u201c\u201d]", "");
 		        lineNum++;
 		        if(line.substring(0, 10).contains("title")) { 
 		            article.put("title", line.substring(7));
@@ -44,6 +45,7 @@ public class ReadJsonFile {
 		            article.put("content", line.substring(9));
 		        }
 		    }
+		    
 		    return article;
 		} catch(FileNotFoundException e) { 
 		    //handle this
