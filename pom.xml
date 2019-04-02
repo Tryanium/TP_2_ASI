@@ -46,6 +46,28 @@
     <version>1.1.1</version>
 </dependency>
 
+<!-- Twitter -->
+    <dependency>
+      <groupId>com.twitter</groupId>
+      <artifactId>hbc-core</artifactId> <!-- or hbc-twitter4j -->
+      <version>2.2.0</version> <!-- or whatever the latest version is -->
+    </dependency>
+    
+    <!-- SQL -->
+    <dependency>
+   <groupId>mysql</groupId>
+   <artifactId>mysql-connector-java</artifactId>
+   <version>5.1.17</version>
+</dependency>
+
+    <dependency>
+        <groupId>org.xerial</groupId>
+        <artifactId>sqlite-jdbc</artifactId>
+        <version>3.15.1
+        </version>
+    </dependency>
+    <!-- Fin SQL -->
+
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>

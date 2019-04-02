@@ -85,6 +85,12 @@ public class MainApp {
     	};
     	
     	channel.basicConsume(QUEUE_NAME, true, deliverCallback, RecupFile -> { }); //Allow the delivering
+    	
+    	GetTweeterFeed test = new GetTweeterFeed();
+    	test.main();
+    	
+    	SQLite test1 = new SQLite();
+    	test1.main();
     }
 }
 
