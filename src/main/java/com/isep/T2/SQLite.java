@@ -3,10 +3,16 @@ package com.isep.T2;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 
 public class SQLite {
     protected static Connection conn = null;
@@ -89,10 +95,8 @@ public class SQLite {
 		   Statement stmt = conn.createStatement();
 		   
 		   String createTableSQL = "CREATE TABLE " + tableName  + "("
-					+ "USER_ID NUMBER(5) NOT NULL, "
-					+ "USERNAME VARCHAR(20) NOT NULL, "
-					+ "CREATED_BY VARCHAR(20) NOT NULL, "
-					+ "CREATED_DATE DATE NOT NULL, " + "PRIMARY KEY (USER_ID) "
+					+ "date_time text NOT NULL,"
+					+ "Classement text NOT NULL "
 					+ ")";
 		   System.out.println( tableName + " is created");
 		   stmt.execute(createTableSQL);
@@ -102,4 +106,22 @@ public class SQLite {
        }
 
    }
+
+   public static void SendData(String data, String tableName) throws Exception {
+	   String sql = "INSERT INTO " + tableName + "(date_time,classement) VALUES(?,?)";
+	   
+	   java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
+	   String date = getDateTime();
+	   pstmt.setString(1, date);
+       pstmt.setString(2, data);
+       pstmt.executeUpdate();
+       pstmt.close();
+   }
+   
+   private static String getDateTime() {
+       SimpleDateFormat dateFormat = new SimpleDateFormat(
+               "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+       Date date = new Date();
+       return dateFormat.format(date);
+}
 }
