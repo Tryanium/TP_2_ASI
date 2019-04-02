@@ -22,6 +22,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A Camel Application
@@ -30,6 +33,9 @@ public class MainApp {
 
 	private final static String QUEUE_NAME = "mqpending";
 	private static final String EXCHANGE_NAME = "test";
+	
+    protected static String dbName = "Tweeter.db";
+    protected static String TableName = "TEST";
 	
     public static void main(String... args) throws Exception {
     	/*
@@ -86,11 +92,36 @@ public class MainApp {
     	
     	channel.basicConsume(QUEUE_NAME, true, deliverCallback, RecupFile -> { }); //Allow the delivering
     	
-    	GetTweeterFeed test = new GetTweeterFeed();
-    	test.main();
     	*/
-    	SQLite test1 = new SQLite();
-    	test1.main();
+
+    	
+    	//Schedule every Hour
+    	ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
+    	ses.scheduleAtFixedRate(new Runnable() {
+    	    @Override
+    	    public void run() {
+    	    	try {
+					TrendsHour();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+    	    }
+    	}, 0, 1, TimeUnit.HOURS);
+    	
     }
+    
+    private static void TrendsHour() throws Exception {
+    	try {
+			ArrayList<String> Trends = GetTweeterFeed.GetFeed();
+			System.out.println(Trends);
+			SQLite.connect(dbName);
+	    	if(!SQLite.CheckTableExist(TableName)) {
+	    		SQLite.CreateTable(TableName);
+	    	}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
 }
 

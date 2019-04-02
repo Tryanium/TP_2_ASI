@@ -1,8 +1,6 @@
 package com.isep.T2;
 
 import java.io.File;
-
-import org.json.simple.JSONObject;
 import java.util.ArrayList;
 
 public class FindFileInDirectory {
