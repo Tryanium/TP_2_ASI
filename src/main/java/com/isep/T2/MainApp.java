@@ -32,7 +32,7 @@ public class MainApp {
 	private static final String EXCHANGE_NAME = "test";
 	
     public static void main(String... args) throws Exception {
-    	
+    	/*
     	FindFileInDirectory FindFiles = new FindFileInDirectory();
     	ArrayList<String> Files = FindFiles.findFile("src/main/resources/articlesPending");
     	
@@ -88,7 +88,7 @@ public class MainApp {
     	
     	GetTweeterFeed test = new GetTweeterFeed();
     	test.main();
-    	
+    	*/
     	SQLite test1 = new SQLite();
     	test1.main();
     }

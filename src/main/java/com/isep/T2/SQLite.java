@@ -15,22 +15,23 @@ import com.mysql.jdbc.ResultSetMetaData;
 public class SQLite {
 	
     protected static Connection conn = null;
-    protected static String dbName = "test.db";
-
+    protected static String dbName = "pouet.db";
+    protected static String TableName = "test";
 
 	public static void main() throws Exception {
-		
+		connect();
 		boolean createDB = createNewDatabase(dbName);
 		if(createDB) {
 			System.out.println("Database Created");
 		} else {
 			System.out.println("DB already Exists");
 		}
-		boolean createTable = createNewTable("TEST");
-		if(createTable) {
-			System.out.println("Table Created");
+		boolean TableExist = CheckTableExist(TableName);
+		if(TableExist) {
+			System.out.println("It exists");
 		} else {
-			System.out.println("Table already exists");
+			CreateTable(TableName);
+			System.out.println("Created");
 		}
 	}
 	
@@ -47,15 +48,13 @@ public class SQLite {
 		   
 	   }
 	   else {
-		   connect();
 	           if (conn != null) {
 	               DatabaseMetaData meta = conn.getMetaData();
 	               System.out.println("The driver name is " + meta.getDriverName());
 	               System.out.println("A new database has been created.");
 	               return true;
 	           }
-
-	   }   
+	   }  
 	   return false;
        
    }
@@ -66,28 +65,20 @@ public class SQLite {
     * @param fileName the database file name
     */
    
-   public static boolean createNewTable(String tableName) throws Exception {
-	        connect();
-	        try (Statement stmt = conn.createStatement()) {
+   public static boolean CheckTableExist(String tableName) throws Exception {
+	        try {
+	        	Statement stmt = conn.createStatement();
 	            final DatabaseMetaData metaData = conn.getMetaData();
 	            final ResultSet tables = metaData.getTables(null, null, tableName, null);
 	            if (tables.next()) {
 	                System.out.println("The table named " + tableName + " already exists");
-	                return false;
+	                stmt.close();
+	                return true;
 	            } else {
-
-	                // SQL statement for creating a new table
-	                String sql = "CREATE TABLE IF NOT EXISTS "+ tableName + "(\n"
-	                        + "	id integer PRIMARY KEY,\n"
-	                        + "	name text NOT NULL,\n"
-	                        + "	capacity real\n"
-	                        + ");";
-	              
-	                    // create a new table
-	                    stmt.execute(sql);
-	            	return true;
-	            }
-	        } catch (Exception ex) {
+				      stmt.close();
+	            	return false;
+	            //}
+	        }} catch (Exception ex) {
 	            throw new Exception("Failed to create table named " + tableName + " in database", ex);
 	        }
 	       }
@@ -103,5 +94,23 @@ public class SQLite {
        catch(ClassNotFoundException | SQLException e){
            System.err.println(e.getClass().getName() + ": " + e.getMessage());
        }
+   }
+
+   public static void CreateTable(String tableName) throws Exception {
+	   try {
+		   Statement stmt = conn.createStatement();
+		   
+		   String createTableSQL = "CREATE TABLE " + tableName  + "("
+					+ "USER_ID NUMBER(5) NOT NULL, "
+					+ "USERNAME VARCHAR(20) NOT NULL, "
+					+ "CREATED_BY VARCHAR(20) NOT NULL, "
+					+ "CREATED_DATE DATE NOT NULL, " + "PRIMARY KEY (USER_ID) "
+					+ ")";
+		   stmt.execute(createTableSQL);
+		   stmt.close();
+	   } catch (Exception ex) {
+           throw new Exception("Failed to create table named " + tableName + " in database", ex);
+       }
+
    }
 }
