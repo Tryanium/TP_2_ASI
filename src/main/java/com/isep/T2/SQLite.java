@@ -109,13 +109,18 @@ public class SQLite {
 
    public static void SendData(String data, String tableName) throws Exception {
 	   String sql = "INSERT INTO " + tableName + "(date_time,classement) VALUES(?,?)";
-	   
-	   java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
-	   String date = getDateTime();
-	   pstmt.setString(1, date);
-       pstmt.setString(2, data);
-       pstmt.executeUpdate();
-       pstmt.close();
+	   try {
+		   java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
+		   String date = getDateTime();
+		   pstmt.setString(1, date);
+	       pstmt.setString(2, data);
+	       pstmt.executeUpdate();
+	       System.out.println("Data send");
+	       pstmt.close();
+	   } catch (Exception ex) {
+		   throw new Exception("Failed to send the data in database", ex);
+	   }
+
    }
    
    private static String getDateTime() {

@@ -41,7 +41,6 @@ public class MainApp {
     protected static String TableName = "FEED";
 	
     public static void main(String... args) throws Exception {
-    	/*
     	FindFileInDirectory FindFiles = new FindFileInDirectory();
     	ArrayList<String> Files = FindFiles.findFile("src/main/resources/articlesPending");
     	
@@ -95,9 +94,6 @@ public class MainApp {
     	
     	channel.basicConsume(QUEUE_NAME, true, deliverCallback, RecupFile -> { }); //Allow the delivering
     	
-    	*/
-
-    	
     	//Schedule every Hour
     	ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
     	ses.scheduleAtFixedRate(new Runnable() {
@@ -113,7 +109,8 @@ public class MainApp {
     	
     }
     
-    private static void TrendsHour() throws Exception {
+    @SuppressWarnings("unchecked")
+	private static void TrendsHour() throws Exception {
     	try {
 			ArrayList<String> Trends = GetTweeterFeed.GetFeed();
 			SQLite.connect(dbName);
