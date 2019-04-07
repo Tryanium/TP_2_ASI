@@ -9,7 +9,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 
 public class GetTweeterFeed {
-	
+
     private static String consumerKey = "NMqaca1bzXsOcZhP2XlwA";
     private static String consumerSecret = "VxNQiRLwwKVD0K9mmfxlTTbVdgRpriORypnUbHhxeQw";
     private static String accessToken = "26693234-W0YjxL9cMJrC0VZZ4xdgFMymxIQ10LeL1K8YlbBY";
@@ -17,20 +17,20 @@ public class GetTweeterFeed {
 
     public static ArrayList<String> TweeterTrends = new ArrayList<String>();
 
-	public static ArrayList<String> GetFeed() throws Exception {
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true)
-		  .setOAuthConsumerKey(consumerKey)
-		  .setOAuthConsumerSecret(consumerSecret)
-		  .setOAuthAccessToken(accessToken)
-		  .setOAuthAccessTokenSecret(accessTokenSecret);
-		
-		Twitter twitter = new TwitterFactory(cb.build()).getInstance();
-		Trends trends = twitter.getPlaceTrends(1); //1 for Worlwide, 615702 for Paris
-		for (int i = 0; i < 10; i++) {
-			TweeterTrends.add(trends.getTrends()[i].getName());
-		}
-		return TweeterTrends;
-	}
+    public static ArrayList<String> GetFeed() throws Exception {
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey(consumerKey)
+                .setOAuthConsumerSecret(consumerSecret)
+                .setOAuthAccessToken(accessToken)
+                .setOAuthAccessTokenSecret(accessTokenSecret);
+
+        Twitter twitter = new TwitterFactory(cb.build()).getInstance();
+        Trends trends = twitter.getPlaceTrends(1); //1 for Worlwide, 615702 for Paris
+        for (int i = 0; i < 10; i++) {
+            TweeterTrends.add(trends.getTrends()[i].getName());
+        }
+        return TweeterTrends;
+    }
 
 }
